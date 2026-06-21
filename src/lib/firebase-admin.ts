@@ -9,11 +9,28 @@ if (getApps().length === 0) {
   if (serviceAccountKey) {
     try {
       let parsedCredentials;
+      
+      const cleanJsonString = (str: string) => {
+        // Replaces literal newlines inside the "private_key" string literal with escaped \n
+        return str.replace(/"private_key":\s*"([\s\S]*?)"/, (match, p1) => {
+          const escaped = p1.replace(/\r/g, "").replace(/\n/g, "\\n");
+          return `"private_key": "${escaped}"`;
+        });
+      };
+
       if (serviceAccountKey.trim().startsWith("{")) {
-        parsedCredentials = JSON.parse(serviceAccountKey);
+        try {
+          parsedCredentials = JSON.parse(serviceAccountKey);
+        } catch (e) {
+          parsedCredentials = JSON.parse(cleanJsonString(serviceAccountKey));
+        }
       } else {
         const decoded = Buffer.from(serviceAccountKey, "base64").toString("utf-8");
-        parsedCredentials = JSON.parse(decoded);
+        try {
+          parsedCredentials = JSON.parse(decoded);
+        } catch (e) {
+          parsedCredentials = JSON.parse(cleanJsonString(decoded));
+        }
       }
 
       if (parsedCredentials && parsedCredentials.private_key) {
