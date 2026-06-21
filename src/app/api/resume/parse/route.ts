@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { analyzeResume } from "@/lib/gemini";
 import { adminDb } from "@/lib/firebase-admin";
-import mammoth from "mammoth";
 import crypto from "crypto";
 
 export const maxDuration = 60; // Allow up to 60 seconds for PDF parsing and analysis
@@ -20,6 +19,8 @@ export async function POST(req: NextRequest) {
     let parsedData: any = null;
 
     if (file.name.endsWith(".docx")) {
+      const mammothModule = await import("mammoth");
+      const mammoth = mammothModule.default || mammothModule;
       const result = await mammoth.extractRawText({ buffer: fileBuffer });
       const resumeText = result.value;
       if (!resumeText.trim()) {
