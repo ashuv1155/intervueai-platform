@@ -16,6 +16,10 @@ if (getApps().length === 0) {
         parsedCredentials = JSON.parse(decoded);
       }
 
+      if (parsedCredentials && parsedCredentials.private_key) {
+        parsedCredentials.private_key = parsedCredentials.private_key.replace(/\\n/g, "\n");
+      }
+
       initializeApp({
         credential: cert(parsedCredentials),
         storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || `${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}.appspot.com`,
