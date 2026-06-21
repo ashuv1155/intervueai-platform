@@ -3,6 +3,8 @@ import { generateQuestions } from "@/lib/gemini";
 import { adminDb } from "@/lib/firebase-admin";
 import crypto from "crypto";
 
+export const maxDuration = 60; // Allow up to 60 seconds for question generation
+
 export async function POST(req: NextRequest) {
   try {
     const { userId, resumeId, type, difficulty, durationMinutes } = await req.json();

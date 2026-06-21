@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { generateReportSummary } from "@/lib/gemini";
 import { adminDb } from "@/lib/firebase-admin";
 
+export const maxDuration = 60; // Allow up to 60 seconds for career coach summary report generation
+
 export async function POST(req: NextRequest) {
   try {
     const { sessionId } = await req.json();

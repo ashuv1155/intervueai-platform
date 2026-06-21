@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { scoreAnswer } from "@/lib/gemini";
 import { adminDb } from "@/lib/firebase-admin";
 
+export const maxDuration = 60; // Allow up to 60 seconds for answer scoring and critique
+
 export async function POST(req: NextRequest) {
   let reqBody: any = {};
   try {

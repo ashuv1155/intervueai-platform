@@ -4,6 +4,8 @@ import { adminDb } from "@/lib/firebase-admin";
 import mammoth from "mammoth";
 import crypto from "crypto";
 
+export const maxDuration = 60; // Allow up to 60 seconds for PDF parsing and analysis
+
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
